@@ -30,19 +30,33 @@ async function handleGetQuantityProduct(storeId) {
     .then((res) => res.json())
     .then((res) => res.data.products);
 
-  let quantityProduct = 0;
+  let productsData = [];
 
   for (const product of await getProductsList) {
+    const productData = { art: product.id }
+
+    const sizesProduct = {}
+
     for (const sizes of product.sizes) {
+      let quantityProduct = 0;
+
       for (const stocks of sizes.stocks) {
         if (stocks.wh === storeId) {
           quantityProduct += stocks.qty;
         }
+
+        if (quantityProduct !== 0) {
+          sizesProduct[sizes.origName] = quantityProduct
+        }
       }
+
+      productData['stock'] = sizesProduct
     }
+
+    productsData.push(productData)
   }
 
-  return quantityProduct;
+  return productsData;
 }
 
 async function handleRequest(request, response) {
@@ -59,4 +73,5 @@ async function handleRequest(request, response) {
 
   response.end();
 }
+
 
