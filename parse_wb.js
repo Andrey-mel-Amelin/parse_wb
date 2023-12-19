@@ -2,7 +2,7 @@ const http = require('http');
 const port = 3000;
 
 const server = http.createServer(async (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.writeHead(200, { 'Content-Type': 'text/json' });
 });
 
 server.listen(port, () => {
